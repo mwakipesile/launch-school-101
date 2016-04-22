@@ -51,21 +51,21 @@ def calculate(operator, num1, num2)
 end
 
 def run_calculator()
-    greet_user()
-    num1, num2 = get_numbers()
-    operator = get_operator()
+  greet_user()
+  num1, num2 = get_numbers()
+  operator = get_operator()
 
-    if !divide_by_zero?(operator, num1, num2) # check for division by zero error
-      calculate(operator, num1, num2)
-    else
-      Kernel.puts('You can\'t divide a zero. Try again with valid inputs')
-      run_calculator()
-    end
+  if !divide_by_zero?(operator, num1, num2) # check for division by zero error
+    calculate(operator, num1, num2)
+  else
+    Kernel.puts('You can\'t divide a zero. Try again with valid inputs')
+    run_calculator()
+  end
 end
 
 run_calculator()
 
-#Alternative ways of using "rescue" in #get_numbers()
+# Alternative ways of using "rescue" in #get_numbers()
 =begin
 def get_numbers()
     first_num = nil
@@ -78,7 +78,7 @@ def get_numbers()
         second_num = Integer(numbers[1])
       rescue ArgumentError # Raised when Integer is called with non integer argument
         first_num = nil        # Reset first_num so that the loop is re-entered
-        puts "Invalid numbers. " #Inform user 
+        puts "Invalid numbers. " # Inform user 
       end
     end
     
