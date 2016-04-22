@@ -1,21 +1,21 @@
 def greet_user()
-    Kernel.puts("Welcome to Calculator!")
+  Kernel.puts('Welcome to Calculator!')
 end
 
 def valid_operator?(operator)
-    return false if operator == nil
-    return true if operator >= "1" && operator <= "4"
-    return false
+  return false if operator.nil?
+  return true if operator >= '1' && operator <= '4'
+  false
 end
 
 def divide_by_zero?(operator, num1, num2)
-    return false if num1 == 0
-    return true if num2 == 0 && operator == "4"
-    return false
+  return false if num1 == 0
+  return true if num2 == 0 && operator == '4'
+  false
 end
 
 def get_numbers()
-  Kernel.puts("please enter two numbers, separated by space:")
+  Kernel.puts('please enter two numbers, separated by space:')
   numbers = Kernel.gets().chomp()
   numbers = numbers.split(' ')
   first_num = Integer(numbers[0])
@@ -23,30 +23,31 @@ def get_numbers()
 
   return [first_num, second_num]
   
-  rescue
-    puts "Invalid numbers."
+rescue
+  puts 'Invalid numbers.'
   retry
 end
 
 def get_operator()
-    Kernel.puts("Enter operation to be performed: Enter 1 for add, 2 for subtract, 3 for multiply or 4 divide")
-    operator = Kernel.gets().chomp()
-    return operator if valid_operator?(operator)
-    puts Kernel.puts("Invalid operator.")
-    get_operator()
+  Kernel.puts('Enter operation to be performed:')
+  Kernel.puts('Enter 1 for add, 2 for subtract, 3 for multiply or 4 divide')
+  operator = Kernel.gets().chomp()
+  return operator if valid_operator?(operator)
+  puts Kernel.puts('Invalid operator.')
+  get_operator()
 end
 
 def calculate(operator, num1, num2)
-    case operator
-    when "1"
-        Kernel.puts("#{num1} + #{num2} = #{num1 + num2}")
-    when "2"
-        Kernel.puts("#{num1} - #{num2} = #{num1 - num2}")
-    when "3"
-        Kernel.puts("#{num1} x #{num2} = #{num1 * num2}")
-    else
-        Kernel.puts("#{num1} / #{num2} = #{num1 / num2}")
-    end
+  case operator
+  when '1'
+    Kernel.puts("#{num1} + #{num2} = #{num1 + num2}")
+  when '2'
+    Kernel.puts("#{num1} - #{num2} = #{num1 - num2}")
+  when '3'
+    Kernel.puts("#{num1} x #{num2} = #{num1 * num2}")
+  else
+    Kernel.puts("#{num1} / #{num2} = #{num1 / num2}")
+  end
 end
 
 def run_calculator()
@@ -54,11 +55,11 @@ def run_calculator()
     num1, num2 = get_numbers()
     operator = get_operator()
 
-    unless divide_by_zero?(operator, num1, num2) #check for division by zero error
-        calculate(operator, num1, num2)
+    if !divide_by_zero?(operator, num1, num2) # check for division by zero error
+      calculate(operator, num1, num2)
     else
-        Kernel.puts("You can't divide a zero. Try again with valid inputs")
-        run_calculator()
+      Kernel.puts('You can\'t divide a zero. Try again with valid inputs')
+      run_calculator()
     end
 end
 
@@ -68,7 +69,6 @@ run_calculator()
 =begin
 def get_numbers()
     first_num = nil
-
     until first_num.is_a?(Fixnum) do #Could forgo loop and use "retry" instead
       Kernel.puts("please enter two numbers, separated by space:")
       begin
@@ -84,7 +84,6 @@ def get_numbers()
     
     return [first_num, second_num]
 end
-
 def get_numbers()
   Kernel.puts("please enter two numbers, separated by space:")
   numbers = Kernel.gets().chomp()
