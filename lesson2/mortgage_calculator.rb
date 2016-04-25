@@ -7,15 +7,28 @@ MONTHS_IN_YEAR = 12
 
 def validate_apr(apr)
   apr = apr.split('%')[0] # In case input has '%' sign, strip it
-  number?(apr)
+  apr = number?(apr)
+
+  if apr != false
+    return apr if apr >= 0
+  end
+  false
 end
 
 def validate_loan(loan)
-  number?(loan)
+  loan = number?(loan)
+  if loan != false
+    return loan.to_f if loan > 0
+  end
+  false
 end
 
 def validate_duration(years)
-  number?(years)
+  years = number?(years)
+  if years != false
+    return years if years > 0
+  end
+  false
 end
 
 def loan_months(years)
@@ -60,6 +73,7 @@ def monthly_payment
   loan = loan_amount
   months = loan_months(duration)
   rate = monthly_interest_rate(loan_apr)
+  return (loan / months).round(2) if rate == 0 # In case some benevolent folks give interest-free loans
   payment = loan * (rate * (1 + rate)**months) / ((1 + rate)**months - 1)
   payment.round(2)
 end
