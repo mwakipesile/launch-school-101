@@ -1,0 +1,16 @@
+# calculator_messages.yml
+
+en:
+  welcome: "Welcome to Calculator! Enter your name:"
+  valid_name: "Make sure to enter a valid name."
+  numbers: 'please enter two numbers, separated by space:'
+  operator: |+ 
+            Enter operation to be performed: 
+            1 for add, 2 for subtract, 3 for multiply or 4 divide
+  mayday: 'Something went horribly wrong'
+  zero_division: "You can't divide a zero. Try again with valid inputs"
+  invalid_operator: 'Invalid operator.'
+  invalid_numbers: 'Invalid numbers'
+es:
+  welcome: "Bienvenido a la calculadora! Entre su nombre:"
+  valid_name: "Asegúrese de entrar un nombre válido."
