@@ -1,0 +1,10 @@
+# mortgage_calculator_messages.yml
+
+en:
+  welcome: 'Welcome to Mortgage Calculator'
+  loan: 'Enter loan amount:'
+  invalid_loan: 'Invalid input. Please enter a valid amount.'
+  duration: 'Enter loan duration in years'
+  invalid_duration: 'Invalid input. Please enter a valid duration.'
+  apr: 'Enter Annual Percentage Rate (APR)'
+  invalid_apr: 'Invalid input. Please enter valid interest rate.'
