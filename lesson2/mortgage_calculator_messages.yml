@@ -8,3 +8,7 @@ en:
   invalid_duration: 'Invalid input. Please enter a valid duration.'
   apr: 'Enter Annual Percentage Rate (APR)'
   invalid_apr: 'Invalid input. Please enter valid interest rate.'
+  new: "Enter 'Y' for another calculation. Press return or enter any character to exit"
+  exit: |+
+        Thank you for using the Mortgage Calculator.
+            Bye!
