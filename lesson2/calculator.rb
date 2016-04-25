@@ -1,6 +1,8 @@
-def greet_user()
-  Kernel.puts('Welcome to Calculator!')
-end
+require 'yaml'
+require './helper_methods.rb'
+
+MESSAGES = YAML.load_file('calculator_messages.yml')
+LANGUAGE = 'en'
 
 def valid_operator?(operator)
   return false if operator.nil?
@@ -15,25 +17,25 @@ def divide_by_zero?(operator, num1, num2)
 end
 
 def get_numbers()
-  Kernel.puts('please enter two numbers, separated by space:')
+  prompt('numbers')
   numbers = Kernel.gets().chomp()
-  numbers = numbers.split(' ')
-  first_num = Integer(numbers[0])
-  second_num = Integer(numbers[1])
-
-  return [first_num, second_num]
+  first_num, second_num = numbers.split(' ') 
+  first_num = number?(first_num)
+  second_num = number?(second_num)
   
-rescue
-  puts 'Invalid numbers.'
-  retry
+  if first_num != false && second_num != false
+    return [first_num, second_num]
+  else
+    prompt('invalid_numbers')
+    get_numbers()
+  end
 end
 
 def get_operator()
-  Kernel.puts('Enter operation to be performed:')
-  Kernel.puts('Enter 1 for add, 2 for subtract, 3 for multiply or 4 divide')
+  prompt('operator')
   operator = Kernel.gets().chomp()
   return operator if valid_operator?(operator)
-  puts Kernel.puts('Invalid operator.')
+  prompt('invalid_operator')
   get_operator()
 end
 
@@ -45,20 +47,22 @@ def calculate(operator, num1, num2)
     Kernel.puts("#{num1} - #{num2} = #{num1 - num2}")
   when '3'
     Kernel.puts("#{num1} x #{num2} = #{num1 * num2}")
-  else
+  when '4'
     Kernel.puts("#{num1} / #{num2} = #{num1 / num2}")
+  else
+    prompt('mayday')
   end
 end
 
 def run_calculator()
-  greet_user()
+  prompt('welcome')
   num1, num2 = get_numbers()
   operator = get_operator()
 
   if !divide_by_zero?(operator, num1, num2) # check for division by zero error
     calculate(operator, num1, num2)
   else
-    Kernel.puts('You can\'t divide a zero. Try again with valid inputs')
+    prompt('zero_division')
     run_calculator()
   end
 end
