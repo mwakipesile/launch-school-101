@@ -1,4 +1,3 @@
-require 'pry'
 CHOICE_CODES = {
   "r" => "rock",
   "p" => "paper",
@@ -24,7 +23,7 @@ def display_choices
 end
 
 def valid_choice?(choice)
-  return choice if VALID_CHOICES.include?(choice)
+  choice if VALID_CHOICES.include?(choice)
 end
 
 def player_choice
@@ -58,7 +57,7 @@ def display_result(winner, player_choice, computer_choice, win_count)
 
   if winner
     prompt("#{str[winner][0]} score#{str[winner][1]} " \
-    "You: #{win_count[:player]}, Computer: #{win_count[:computer]}")
+          "You: #{win_count[:player]}, Computer: #{win_count[:computer]}")
 
     prompt("#{str[winner][0]} won the game!") if win_count[winner] == 5
   else
@@ -66,10 +65,12 @@ def display_result(winner, player_choice, computer_choice, win_count)
   end
 end
 
-def new_game
-  prompt('Do you want to play again?')
+def new_game(message = 'Do you want to play again? Enter Y or N')
+  prompt(message)
   answer = Kernel.gets().chomp()
-  answer.downcase().start_with?('y')
+  return true if answer.downcase().start_with?('y')
+  return false if answer.downcase().start_with?('n')
+  new_game("Wrong choice. Please enter y for Yes, or n for no")
 end
 
 def run_rpssl(win_count)
