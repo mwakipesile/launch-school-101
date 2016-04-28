@@ -57,7 +57,8 @@ def display_result(winner, player_choice, computer_choice, win_count)
   str = { player: %w(You !), computer: %w(Computer s!) }
 
   if winner
-    prompt("#{str[winner][0]} score#{str[winner][1]} You: #{win_count[:player]}, Computer: #{win_count[:computer]}")
+    prompt("#{str[winner][0]} score#{str[winner][1]} " \
+    "You: #{win_count[:player]}, Computer: #{win_count[:computer]}")
 
     prompt("#{str[winner][0]} won the game!") if win_count[winner] == 5
   else
