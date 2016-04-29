@@ -1,8 +1,3 @@
-
-
-
-
-
 # Solution 4. Return UUID
 ALPHANUMERIC_CHARS = (0..9).to_a.concat(('a'..'f').to_a)
 
@@ -16,11 +11,11 @@ end
 
 # Solution 5. Fix Ben's mess
 def dot_separated_ip_address?(input_string)
-  dot_separated_words = input_string.split(".")
-  
+  dot_separated_words = input_string.split('.')
+
   return false if dot_separated_words.length != 4
-  
+
   dot_separated_words.each { |w| return false unless is_a_number?(w) }
-  
+
   true
 end
