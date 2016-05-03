@@ -15,6 +15,6 @@ def float?(num)
 end
 
 def number?(num)
-    integer?(num) || float?(num)
+    float?(num)
 end
 
