@@ -7,4 +7,3 @@ end
 def update_available_positions(available_positions, used_position)
   available_positions.delete(used_position)
 end
-  
