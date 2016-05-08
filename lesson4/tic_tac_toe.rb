@@ -5,6 +5,7 @@ require './ttt_computer_methods.rb'
 
 CROSS = 'X'.freeze
 NOUGHT = 'O'.freeze
+FIRST_PLAYER = 'choose'.freeze
 EMPTY_POSITION = ' '.freeze
 SWAP_MARKS = { 'X' => NOUGHT, 'O' => CROSS }.freeze
 PLAYERS = { 'O' => 'Computer', 'X' => 'You' }.freeze
@@ -29,16 +30,25 @@ winning_lines = lines
 board = Array.new(9, EMPTY_POSITION)
 available_positions = [*0..8]
 
+def choose_first_player
+  choices = { '1' => CROSS, '2' => NOUGHT }
+  prompt('choose')
+  choice = gets.chomp
+  return choices[choice] if choice == '1' || choice == '2'
+  prompt('invalid')
+  choose_first_player
+end
+
 def reset_values(board, winning_lines, available_positions)
   winning_lines.clear.concat(lines)
   board.clear.concat(Array.new(9, EMPTY_POSITION))
   available_positions.clear.concat([*0..8])
 end
 
-def restart_game(board, winning_lines, available_positions)
+def restart_game(board, winning_lines, available_positions, win_count)
   reset_values(board, winning_lines, available_positions)
 
-  run_ttt(board, winning_lines, available_positions)
+  run_ttt(board, winning_lines, available_positions, win_count)
 end
 
 def delete_dead_lines_from(winning_lines)
@@ -82,6 +92,8 @@ end
 
 def player_move(available_positions, message = 'position')
   prompt(message)
+  puts "=> #{joinor(available_positions)}"
+
   position = gets.chomp
   position = integer?(position)
 
@@ -107,8 +119,9 @@ def play(board, winning_lines, available_positions, mark)
   update_status(board, winning_lines, position, mark)
 end
 
-def run_ttt(board, winning_lines, available_positions, mark = CROSS, message = 'welcome')
+def run_ttt(board, winning_lines, available_positions, win_count = { 'X' => 0, 'O' => 0 }, mark = FIRST_PLAYER, message = 'welcome')
   prompt(message)
+  mark = choose_first_player if FIRST_PLAYER == 'choose'
 
   loop do
     display_board(board)
@@ -118,23 +131,27 @@ def run_ttt(board, winning_lines, available_positions, mark = CROSS, message = '
     mark = SWAP_MARKS[mark]
   end
 
-  display_result(board, winning_lines, mark)
+  win_count[mark] += 1 if win(winning_lines)
+  display_result(board, winning_lines, win_count, mark)
 
-  if new_game
-    restart_game(board, winning_lines, available_positions)
+  if win_count.values.max < 5 && new_game
+    restart_game(board, winning_lines, available_positions, win_count)
   else
     prompt('exit')
   end
 end
 
-def display_result(board, winning_lines, mark)
+def display_result(board, winning_lines, win_count, mark)
   display_board(board)
+
   if win(winning_lines)
     puts "#{PLAYERS[mark]} won!"
   else
     sleep(0.5)
     prompt('tie')
   end
+  puts '--------------------------'
+  puts "Win count. #{PLAYERS[CROSS]}: #{win_count[CROSS]}, #{PLAYERS[NOUGHT]}: #{win_count[NOUGHT]}"
 end
 
 def game_over?(winning_lines)
@@ -142,7 +159,7 @@ def game_over?(winning_lines)
 end
 
 def update_status(board, winning_lines, position, mark)
-  sleep(1)
+  sleep(0.5)
   board[position] = mark
 
   winning_lines.each do |line|

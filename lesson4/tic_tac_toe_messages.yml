@@ -1,10 +1,12 @@
 # Tic Tac Toe messages yalm file
 en:
-  welcome: 'Welcome to Tic Tac Toe challenge. Use numbers between 1 - 9 to choose positions'
-  position: 'Your move:'
+  welcome: 'Welcome to Tic Tac Toe computer challenge!'
+  position: 'Choose a position to place a piece: '
   computer: "Computer's move"
-  invalid_position: 'Invalid position. Please enter a valid position.'
+  choose: 'Enter 1 to go first, 2 for computer to go first'
+  invalid_position: 'Invalid position. Please enter a valid position: '
   invalid_choice: 'Invalid input. Please enter Y or N.'
+  invalid: 'Invalid choice.'
   tie: "It's a tie!"
   new: "Enter 'Y' to play again. 'N' to exit"
   exit: |+
