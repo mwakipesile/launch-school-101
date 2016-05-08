@@ -104,7 +104,7 @@ end
 
 def next_position(board, winning_lines, available_positions, mark)
   return player_move(available_positions) if mark == CROSS
-  
+
   computer_move(board, winning_lines)
 end
 
