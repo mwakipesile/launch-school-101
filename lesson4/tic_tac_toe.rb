@@ -103,12 +103,9 @@ def player_move(available_positions, message = 'position')
 end
 
 def next_position(board, winning_lines, available_positions, mark)
-  if mark == CROSS
-    position = player_move(available_positions)
-  else
-    position = computer_move(board, winning_lines)
-  end
-  position
+  return player_move(available_positions) if mark == CROSS
+  
+  computer_move(board, winning_lines)
 end
 
 def play(board, winning_lines, available_positions, mark)
@@ -143,6 +140,7 @@ end
 
 def display_result(board, winning_lines, win_count, mark)
   display_board(board)
+  separator = '---------------------------------------'
 
   if win(winning_lines)
     puts "#{PLAYERS[mark]} won!"
@@ -150,8 +148,9 @@ def display_result(board, winning_lines, win_count, mark)
     sleep(0.5)
     prompt('tie')
   end
-  puts '--------------------------'
-  puts "Win count. #{PLAYERS[CROSS]}: #{win_count[CROSS]}, #{PLAYERS[NOUGHT]}: #{win_count[NOUGHT]}"
+  puts separator
+  puts "=> Win count. #{PLAYERS[CROSS]}: #{win_count[CROSS]}, #{PLAYERS[NOUGHT]}: #{win_count[NOUGHT]}"
+  puts separator
 end
 
 def game_over?(winning_lines)
