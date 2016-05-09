@@ -1,4 +1,4 @@
-def position_from_1_empty_slot_line(winning_lines)
+def position_at_immediate_risk(winning_lines)
   line = winning_lines.find { |h| h.values.count(NOUGHT) == 2 }
   line = winning_lines.find { |h| h.values.count(CROSS) == 2 } unless line
   line.key(EMPTY_POSITION) if line
@@ -12,12 +12,14 @@ def edge_position?(position)
   EDGE_POSITIONS.include?(position)
 end
 
-def position_from_2_empty_slots_line(board, winning_lines)
-  return position_when_player_has_center(winning_lines) if board[CENTER_POSITION] == CROSS
-  position_when_computer_has_center(winning_lines)
+def at_risk_position_from_2_empty_slots_line(board, winning_lines)
+  if board[CENTER_POSITION] == CROSS
+    return at_risk_position_when_player_has_center(winning_lines)
+  end
+  at_risk_position_when_computer_has_center(winning_lines)
 end
 
-def position_when_player_has_center(winning_lines)
+def at_risk_position_when_player_has_center(winning_lines)
   winning_lines.each do |line|
     line_values = line.values
 
@@ -29,15 +31,15 @@ def position_when_player_has_center(winning_lines)
   winning_lines[0].key(EMPTY_POSITION) if winning_lines.count == 1
 end
 
-def position_when_computer_has_center(winning_lines)
-  position = position_from_middle_winning_line(winning_lines)
-  position = position_from_diagonal_winning_line(winning_lines) unless position
+def at_risk_position_when_computer_has_center(winning_lines)
+  position = at_risk_position_from_middle_line(winning_lines)
+  position = at_risk_position_from_diagonal_line(winning_lines) unless position
   return position if position
 
   winning_lines[0].key(EMPTY_POSITION) if winning_lines.count == 1
 end
 
-def position_from_middle_winning_line(winning_lines)
+def at_risk_position_from_middle_line(winning_lines)
   winning_lines.each do |line|
     line_values = line.values
 
@@ -49,7 +51,7 @@ def position_from_middle_winning_line(winning_lines)
   false
 end
 
-def position_from_diagonal_winning_line(winning_lines)
+def at_risk_position_from_diagonal_line(winning_lines)
   position_frequency =  [nil, 0]
 
   winning_lines.each do |line|

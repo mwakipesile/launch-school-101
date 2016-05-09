@@ -91,10 +91,10 @@ end
 def computer_move(board, winning_lines)
   prompt('computer')
   return CENTER_POSITION if board[CENTER_POSITION] == EMPTY_POSITION
-  position = position_from_1_empty_slot_line(winning_lines)
+  position = position_at_immediate_risk(winning_lines)
   return position if position
 
-  position_from_2_empty_slots_line(board, winning_lines)
+  at_risk_position_from_2_empty_slots_line(board, winning_lines)
 end
 
 def player_move(available_positions, message = 'position')
