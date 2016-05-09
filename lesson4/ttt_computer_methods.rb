@@ -50,20 +50,32 @@ def position_from_middle_winning_line(winning_lines)
 end
 
 def position_from_diagonal_winning_line(winning_lines)
-  position_frequency =  [:position, 0]
+  position_frequency =  [nil, 0]
 
   winning_lines.each do |line|
     line_values = line.values
 
     next unless line_values.include?(CROSS)
     next unless line_values.count(EMPTY_POSITION) == 2
-    line.each_key do |k|
-      next unless corner_position?(k)
-      frequency = winning_lines.map(&:flatten).flatten.count(k)
-      return k if frequency == 3
-      position_frequency = [k, frequency] if frequency > position_frequency[1]
-    end
+
+    position, frequency = corner_position_and_occurence_in(winning_lines, line)
+    return position if frequency == 3
+    next if position.nil?
+    position_frequency = [position, frequency] if position_frequency[1] < frequency
   end
 
-  return position_frequency[0] if position_frequency[1] > 0
+  position_frequency[0]
+end
+
+def corner_position_and_occurence_in(winning_lines, line)
+  position_frequency = [nil, 0]
+
+  line.each_key do |position|
+    next unless corner_position?(position)
+    frequency = winning_lines.map(&:flatten).flatten.count(position)
+    return [position, frequency] if frequency == 3
+    position_frequency = [position, frequency] if frequency > position_frequency[1]
+  end
+
+  position_frequency
 end
