@@ -10,15 +10,15 @@ def prompt(key)
 end
 
 def integer?(num)
-  return Integer(num)
+  Integer(num)
 rescue
-  return
+  nil
 end
 
 def float?(num)
-  return Float(num)
+  Float(num)
 rescue
-  return
+  nil
 end
 
 def number?(num)
