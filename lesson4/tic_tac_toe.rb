@@ -1,3 +1,4 @@
+require 'pry'
 require 'yaml'
 require '../lesson2/helper_methods.rb'
 require './ttt_computer_methods.rb'
@@ -5,29 +6,20 @@ require './ttt_computer_methods.rb'
 CROSS = 'X'.freeze
 NOUGHT = 'O'.freeze
 FIRST_PLAYER = 'choose'.freeze
-EMPTY_POSITION = ' '.freeze
+EMPTY_SQUARE = ' '.freeze
 ALTENATE_PLAYERS = { 'X' => NOUGHT, 'O' => CROSS }.freeze
 PLAYERS = { 'O' => 'Computer', 'X' => 'You' }.freeze
+POSITIONS = [*0..8].freeze
 CORNER_POSITIONS = [0, 2, 6, 8].freeze
 EDGE_POSITIONS = [1, 3, 5, 7].freeze
 CENTER_POSITION = 4
 
-def lines
-  [
-    { 0 => EMPTY_POSITION, 1 => EMPTY_POSITION, 2 => EMPTY_POSITION },
-    { 6 => EMPTY_POSITION, 7 => EMPTY_POSITION, 8 => EMPTY_POSITION },
-    { 0 => EMPTY_POSITION, 3 => EMPTY_POSITION, 6 => EMPTY_POSITION },
-    { 2 => EMPTY_POSITION, 5 => EMPTY_POSITION, 8 => EMPTY_POSITION },
-    { 0 => EMPTY_POSITION, 4 => EMPTY_POSITION, 8 => EMPTY_POSITION },
-    { 2 => EMPTY_POSITION, 4 => EMPTY_POSITION, 6 => EMPTY_POSITION },
-    { 3 => EMPTY_POSITION, 4 => EMPTY_POSITION, 5 => EMPTY_POSITION },
-    { 1 => EMPTY_POSITION, 4 => EMPTY_POSITION, 7 => EMPTY_POSITION }
-  ]
-end
+WINNING_LINES = [
+  [0, 1, 2], [3, 4, 5], [6, 7, 8], [0, 3, 6],
+  [1, 4, 7], [2, 5, 8], [0, 4, 8], [2, 4, 6]
+].freeze
 
-winning_lines = lines
-board = Array.new(9, EMPTY_POSITION)
-available_positions = [*0..8]
+board = Array.new(9, EMPTY_SQUARE)
 
 def display_board(board)
   horiz = '------------'
@@ -53,133 +45,138 @@ def choose_first_player
   choose_first_player
 end
 
-def reset_values(board, winning_lines, available_positions)
-  winning_lines.clear.concat(lines)
-  board.clear.concat(Array.new(9, EMPTY_POSITION))
-  available_positions.clear.concat([*0..8])
+def reset(board)
+  board.clear.concat(Array.new(9, EMPTY_SQUARE))
 end
 
-def valid_position?(available_positions, position)
+def empty_positions(board)
+  POSITIONS.select { |pos| board[pos] == EMPTY_SQUARE }
+end
+
+def valid_position?(board, position)
   position = integer?(position)
   return false unless position
-  available_positions.include?(position - 1)
+
+  empty_positions(board).include?(position - 1)
 end
 
-def update_available_positions(available_positions, used_position)
-  available_positions.delete(used_position)
-end
-
-def delete_dead_lines_from(winning_lines)
-  winning_lines.delete_if do |line|
-    line.value?(CROSS) && line.value?(NOUGHT)
+def lines_with_path_to_win(board)
+  winning_lines_indexes = WINNING_LINES.reject do |indexes|
+    line = board.values_at(*indexes)
+    line.include?(CROSS) && line.include?(NOUGHT)
   end
+
+  return if winning_lines_indexes.empty?
+
+  winning_lines_indexes.map { |line| Hash[line.zip(board.values_at(*line))] }
 end
 
-def viable_winning_lines(winning_lines, positions, current_mark)
-  delete_dead_lines_from(winning_lines)
+def viable_winning_lines(board, current_mark)
+  winning_lines = lines_with_path_to_win(board)
 
-  return if winning_lines.empty?
+  return if winning_lines.nil?
 
   if winning_lines.count == 1
-    return if winning_lines[0].values.count(' ') == 2
-    return if positions.count < 2 && winning_lines[0].value?(current_mark)
+    last_winning_line = winning_lines[0]
+
+    return if last_winning_line.values.count(' ') == 2
+
+    available_positions = empty_positions(board)
+    return if available_positions.count < 2 && last_winning_line.value?(current_mark)
   end
 
   winning_lines
 end
 
-def computer_move(board, winning_lines)
+def computer_move(board)
   prompt('computer')
-  return CENTER_POSITION if board[CENTER_POSITION] == EMPTY_POSITION
-  position = position_at_immediate_risk(winning_lines)
+  return CENTER_POSITION if board[CENTER_POSITION] == EMPTY_SQUARE
+
+  position = position_at_immediate_risk(board)
   return position if position
 
-  at_risk_position_from_2_empty_slots_line(board, winning_lines)
+  at_risk_position_from_2_empty_slots_line(board)
 end
 
-def player_move(available_positions, message = 'position')
+def player_move(board, message = 'position')
+  available_positions = empty_positions(board)
+
   prompt(message)
   puts "=> #{joinor(available_positions)}"
 
   position = gets.chomp
   position = integer?(position)
 
-  return position - 1 if position && valid_position?(available_positions, position)
+  return position - 1 if position && valid_position?(board, position)
   message = 'invalid_position'
-  player_move(available_positions, message)
+  player_move(board, message)
 end
 
-def next_position(board, winning_lines, available_positions, mark)
-  return player_move(available_positions) if mark == CROSS
+def next_position(board, mark)
+  return player_move(board) if mark == CROSS
 
-  computer_move(board, winning_lines)
+  computer_move(board)
 end
 
-def play(board, winning_lines, available_positions, mark)
-  position = next_position(board, winning_lines, available_positions, mark)
-  update_available_positions(available_positions, position)
+def play(board, mark)
+  position = next_position(board, mark)
 
-  update_status(board, winning_lines, position, mark)
+  board[position] = mark
 end
 
-def run_the_game(board, winning_lines, available_positions, mark)
+def run_the_game(board, mark)
   loop do
     clear_screen
 
     display_board(board)
-    play(board, winning_lines, available_positions, mark)
+    play(board, mark)
 
-    break if win(winning_lines)
-    break if tie?(winning_lines, available_positions, mark)
+    break if win(board)
+    break if tie?(board, mark)
     mark = ALTENATE_PLAYERS[mark]
   end
 end
 
-def tic_tac_toe(board, winning_lines, available_positions)
+def tic_tac_toe(board)
   win_count = { 'X' => 0, 'O' => 0 }
   prompt('welcome')
 
   loop do
     mark = first_player
-    run_the_game(board, winning_lines, available_positions, mark)
-    winner = win(winning_lines)
+    run_the_game(board, mark)
+    winner = win(board)
+
     win_count[winner] += 1 if winner
-    display_result(board, winning_lines, win_count)
+    display_result(board, win_count)
 
     break unless win_count.values.max < 5 && new_game
-    reset_values(board, winning_lines, available_positions)
+    reset(board)
   end
 
   prompt('exit')
 end
 
-def update_status(board, winning_lines, position, mark)
-  sleep(0.5)
-  board[position] = mark
+def win(board)
+  winning_lines = lines_with_path_to_win(board)
+  return if winning_lines.nil?
 
   winning_lines.each do |line|
-    line[position] = mark if line.key?(position)
-  end
-end
-
-def win(winning_lines)
-  winning_lines.each do |line|
-    return CROSS if line.values.all? { |i| i == CROSS }
-    return NOUGHT if line.values.all? { |i| i == NOUGHT }
+    return CROSS if line.values.all? { |mark| mark == CROSS }
+    return NOUGHT if line.values.all? { |mark| mark == NOUGHT }
   end
 
-  false
+  nil
 end
 
-def tie?(winning_lines, positions, mark)
-  viable_winning_lines(winning_lines, positions, mark).nil?
+def tie?(board, mark)
+  viable_winning_lines(board, mark).nil?
 end
 
-def display_result(board, winning_lines, win_count)
+def display_result(board, win_count)
   display_board(board)
   separator = '---------------------------------------'
 
-  winner = win(winning_lines)
+  winner = win(board)
   if winner
     puts "#{PLAYERS[winner]} won!"
   else
@@ -201,4 +198,4 @@ def new_game(message = 'new')
   new_game('invalid_choice')
 end
 
-tic_tac_toe(board, winning_lines, available_positions)
+tic_tac_toe(board)
