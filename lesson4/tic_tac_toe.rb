@@ -1,6 +1,7 @@
 require 'pry'
 require 'yaml'
 require '../lesson2/helper_methods.rb'
+require '../lib/game_helpers.rb'
 require './ttt_computer_methods.rb'
 
 CROSS = 'X'.freeze
@@ -18,8 +19,6 @@ WINNING_LINES = [
   [0, 1, 2], [3, 4, 5], [6, 7, 8], [0, 3, 6],
   [1, 4, 7], [2, 5, 8], [0, 4, 8], [2, 4, 6]
 ].freeze
-
-board = Array.new(9, EMPTY_SQUARE)
 
 def display_board(board)
   horiz = '------------'
@@ -149,7 +148,7 @@ def tic_tac_toe(board)
     win_count[winner] += 1 if winner
     display_result(board, win_count)
 
-    break unless win_count.values.max < 5 && new_game
+    break unless win_count.values.max < 5 && play_again?
     reset(board)
   end
 
@@ -189,13 +188,6 @@ def display_result(board, win_count)
   puts separator
 end
 
-def new_game(message = 'new')
-  prompt(message)
-  answer = gets.chomp
-  clear_screen
-  return true if answer.downcase.start_with?('y')
-  return false if answer.downcase.start_with?('n')
-  new_game('invalid_choice')
-end
+board = Array.new(9, EMPTY_SQUARE)
 
 tic_tac_toe(board)
