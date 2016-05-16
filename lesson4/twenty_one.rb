@@ -120,21 +120,15 @@ def display_players_status(players_hand, busted = false)
   puts "=> #{busted ? 'You busted with' : 'You have'} #{points(players_hand)} points"
 end
 
-def winner_if_there_is_one(players_hand, dealers_hand, wins)
+def winner_if_there_is_one(players_hand, dealers_hand)
   player_points = points(players_hand)
   dealer_points = points(dealers_hand)
 
-  if player_points > dealer_points
-    wins[:player] += 1
-    return :player
-  elsif dealer_points > player_points
-    wins[:dealer] += 1
-    return :dealer
-  end
+  return :player if player_points > dealer_points
+  :dealer if dealer_points > player_points
 end
 
-def display_result(players_hand, dealers_hand, wins)
-  winner = winner_if_there_is_one(players_hand, dealers_hand, wins)
+def display_result(winner)
   case winner
   when :player
     prompt('win')
@@ -151,8 +145,11 @@ def run_the_game(deck, players_hand, dealers_hand, wins)
 
   dealers_round(deck, players_hand, dealers_hand, wins) unless player_busted
 
-  busted = player_busted || busted?(dealers_hand)
-  display_result(players_hand, dealers_hand, wins) unless busted
+  unless player_busted || busted?(dealers_hand)
+    winner = winner_if_there_is_one(players_hand, dealers_hand)
+    wins[winner] += 1 if winner
+    display_result(winner)
+  end
 
   if wins.values.max == 5
     display_winner(wins)
