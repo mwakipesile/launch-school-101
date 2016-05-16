@@ -1,13 +1,14 @@
 def play_again?(message = 'new')
-  prompt(message)
+  loop do
+    prompt(message)
+    answer = gets.chomp
+    return false if answer.downcase.start_with?('n')
 
-  answer = gets.chomp
-  return false if answer.downcase.start_with?('n')
+    if answer.downcase.start_with?('y')
+      clear_screen
+      return true
+    end
 
-  if answer.downcase.start_with?('y')
-    clear_screen
-    return true
+    message = 'invalid_choice'
   end
-
-  play_again?('invalid_choice')
 end
