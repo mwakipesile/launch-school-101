@@ -4,6 +4,8 @@ require '../lesson2/helper_methods.rb'
 require '../lib/game_helpers.rb'
 require '../lib/cards.rb'
 
+MESSAGES = YAML.load_file('twenty_one_messages.yml')
+LANGUAGE = 'en'.freeze
 CARD_POINTS = {
   "2" => 2, "3" => 3, "4" => 4, "5" => 5, "6" => 6, "7" => 7, "8" => 8,
   "9" => 9, "T" => 10, "J" => 10, "Q" => 10, "K" => 10, 'A' => 11
@@ -14,8 +16,23 @@ DEALERS_FLOOR_POINTS = 17
 ACE = 'A'.freeze
 HIT = 'h'.freeze
 STAY = 's'.freeze
-HIDDEN_CARD = ['', ''].freeze
-BUSTED = 'busted'.freeze
+HIDDEN_CARD = ''.freeze
+BUSTED = true
+
+def blackjack(dealers_hand, players_hand)
+  return :player if points(players_hand) == BLACKJACK
+  return :dealer if points(dealers_hand) == BLACKJACK
+end
+
+def display_blackjack(dealers_hand, players_hand)
+  dealers_points = points(dealers_hand)
+
+  clear_screen
+  display_cards(dealers_hand)
+  prompt('blackjack') if dealers_points == BLACKJACK
+  display_cards(players_hand)
+  dealers_points == BLACKJACK ? prompt('loss') : prompt('blackjack')
+end
 
 def players_round(deck, players_hand, dealers_hand, wins)
   loop do
@@ -66,7 +83,7 @@ def update_dealers_hand(deck, dealers_hand)
 end
 
 def players_decision
-  puts "Hit or stay?"
+  prompt('decision')
   gets.chomp.downcase
 end
 
@@ -84,22 +101,24 @@ end
 
 def card_if_player_hits(deck)
   decision = players_decision
-  return deal(deck, 1) if decision == HIT
-  return if decision == STAY
-  puts "Invalid input: Please enter H or hit, s or stay"
+
+  return deal(deck, 1) if decision.downcase.start_with?(HIT)
+  return if decision.downcase.start_with?(STAY)
+
+  prompt('invalid')
   card_if_player_hits(deck)
 end
 
 def display_dealers_status(dealers_hand, busted = false)
   display_cards(dealers_hand)
   unless dealers_hand.include?(HIDDEN_CARD)
-    puts "Dealer #{busted ? 'busted with' : 'stays with'} #{points(dealers_hand)}"
+    puts "=> Dealer #{busted ? 'busted with' : 'stays with'} #{points(dealers_hand)}"
   end
 end
 
 def display_players_status(players_hand, busted = false)
   display_cards(players_hand)
-  puts "#{busted ? 'You busted with' : 'You have'} #{points(players_hand)} points"
+  puts "=> #{busted ? 'You busted with' : 'You have'} #{points(players_hand)} points"
 end
 
 def winner_if_there_is_one(players_hand, dealers_hand, wins)
@@ -119,18 +138,32 @@ def display_result(players_hand, dealers_hand, wins)
   winner = winner_if_there_is_one(players_hand, dealers_hand, wins)
   case winner
   when :player
-    puts 'You won'
+    prompt('win')
   when :dealer
-    puts 'You lost'
+    prompt('loss')
   else
-    puts 'Push'
+    prompt('push')
+  end
+end
+
+def run_the_game(deck, players_hand, dealers_hand, wins)
+  players_round(deck, players_hand, dealers_hand, wins)
+  player_busted = busted?(players_hand)
+
+  dealers_round(deck, players_hand, dealers_hand, wins) unless player_busted
+
+  busted = player_busted || busted?(dealers_hand)
+  display_result(players_hand, dealers_hand, wins) unless busted
+
+  if wins.values.max == 5
+    display_winner(wins)
+    reset(wins)
   end
 end
 
 def display_winner(wins)
-  puts "You won #{wins[:player]}, dealer won #{wins[:dealer]}"
-  winner = wins[:player] == 5 ? 'You are' : 'Dealer is'
-  puts "#{winner} the overall winner"
+  puts "=> You won #{wins[:player]}, dealer won #{wins[:dealer]}"
+  wins[:player] == 5 ? prompt('player_wins') : prompt('dealer_wins')
 end
 
 def reset(wins)
@@ -146,21 +179,17 @@ def twenty_one
     dealers_hand = deal(deck)
     players_hand = deal(deck)
 
-    players_round(deck, players_hand, dealers_hand, wins)
-    player_busted = busted?(players_hand)
-
-    dealers_round(deck, players_hand, dealers_hand, wins) unless player_busted
-
-    busted = player_busted || busted?(dealers_hand)
-    display_result(players_hand, dealers_hand, wins) unless busted
-
-    if wins.values.max == 5
-      display_winner(wins)
-      reset(wins)
+    blackjack_winner = blackjack(dealers_hand, players_hand)
+    if blackjack_winner
+      wins[blackjack_winner] += 1
+      display_blackjack(dealers_hand, players_hand)
+    else
+      run_the_game(deck, players_hand, dealers_hand, wins)
     end
 
     break unless play_again?
   end
+  prompt('exit')
 end
 
 twenty_one

@@ -1,6 +1,3 @@
-MESSAGES = YAML.load_file('tic_tac_toe_messages.yml')
-LANGUAGE = 'en'.freeze
-
 def messages(message, lang = 'en')
   MESSAGES[lang][message]
 end

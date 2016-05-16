@@ -4,6 +4,8 @@ require '../lesson2/helper_methods.rb'
 require '../lib/game_helpers.rb'
 require './ttt_computer_methods.rb'
 
+MESSAGES = YAML.load_file('tic_tac_toe_messages.yml')
+LANGUAGE = 'en'.freeze
 CROSS = 'X'.freeze
 NOUGHT = 'O'.freeze
 FIRST_PLAYER = 'choose'.freeze
@@ -138,6 +140,7 @@ end
 
 def tic_tac_toe(board)
   win_count = { 'X' => 0, 'O' => 0 }
+  clear_screen
   prompt('welcome')
 
   loop do
