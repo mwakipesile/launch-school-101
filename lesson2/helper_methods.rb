@@ -23,7 +23,7 @@ def number?(num)
 end
 
 def joinor(array, delimiter = ', ', conjunction = 'or')
-  temp_array = array.map { |i| i + 1 }
+  temp_array = array.map { |num| num + 1 }
 
   temp_array[-1] = "#{conjunction} #{temp_array[-1]}" if temp_array.length > 1
   temp_array.join(delimiter)
