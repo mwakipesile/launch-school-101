@@ -1,0 +1,16 @@
+# Twenty One messages yalm file
+en:
+  welcome: 'Welcome to Twenty One table'
+  decision: 'Hit or stay?'
+  win: 'You won this round!'
+  loss: 'You lost this round'
+  push: 'Push'
+  blackjack: 'BLACKJACK!!!'
+  player_wins: 'Congrats! You are the overall winner!'
+  dealer_wins: 'Dealer is the overall winner'
+  invalid_choice: 'Invalid input. Please enter Y or N.'
+  invalid: 'Invalid input: Please enter h or hit, s or stay'
+  new: "Enter 'Y' to play again. 'N' to exit"
+  exit: |+
+        Thank you for playing Twenty One.
+            Bye!
