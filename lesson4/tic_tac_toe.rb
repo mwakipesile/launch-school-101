@@ -1,4 +1,3 @@
-require 'pry'
 require 'yaml'
 require '../lesson2/helper_methods.rb'
 require '../lib/game_helpers.rb'
