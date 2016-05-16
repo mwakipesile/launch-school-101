@@ -8,13 +8,13 @@ end
 
 def integer?(num)
   Integer(num)
-rescue
+rescue ArgumentError, TypeError
   nil
 end
 
 def float?(num)
   Float(num)
-rescue
+rescue ArgumentError, TypeError
   nil
 end
 
