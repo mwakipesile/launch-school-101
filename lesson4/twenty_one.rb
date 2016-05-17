@@ -141,14 +141,15 @@ end
 
 def run_the_game(deck, players_hand, dealers_hand, wins)
   players_round(deck, players_hand, dealers_hand, wins)
-  player_busted = busted?(players_hand)
-
-  dealers_round(deck, players_hand, dealers_hand, wins) unless player_busted
-
-  unless player_busted || busted?(dealers_hand)
-    winner = winner_if_there_is_one(players_hand, dealers_hand)
-    wins[winner] += 1 if winner
-    display_result(winner)
+  
+  unless busted?(players_hand)
+    dealers_round(deck, players_hand, dealers_hand, wins)
+  
+    unless busted?(dealers_hand)
+      winner = winner_if_there_is_one(players_hand, dealers_hand)
+      wins[winner] += 1 if winner
+      display_result(winner)
+    end
   end
 
   if wins.values.max == 5
