@@ -1,20 +1,15 @@
-# frozen_string_literal: true
-# Move class
-class Move
-  attr_reader :choice
+require './move.rb'
 
+class MoveSL < Move
   CHOICE_TABLE = {
     'r' => 'rock',
     'p' => 'paper',
-    's' => 'scissors'
+    's' => 'scissors',
+    'k' => 'spock',
+    'l' => 'lizard'
   }.freeze
-
   CHOICES = (CHOICE_TABLE.keys).freeze
-  WIN = %w(sp pr rs).freeze
-
-  def initialize(choice)
-    @choice = choice
-  end
+  WIN = %w(sp pr rl lk ks sl lp pk kr rs).freeze
 
   def beats?(foe)
     WIN.include?(choice + foe.choice)

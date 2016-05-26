@@ -1,21 +1,26 @@
 # frozen_string_literal: true
 # Player class
 class Player
-  attr_accessor :move, :name
+  attr_accessor :move, :name, :score
+
+  def initialize
+    @score = Score.new
+  end
 end
 
 # Human child class
 class Human < Player
   def initialize
+    super
     set_name
   end
 
   def choose
-    puts 'Choose rock, paper, or scissors'
-    mv = Move.new(gets.chomp)
+    puts 'Enter r, p, or s for rock, paper, or scissors respectively'
+    mv = gets.chomp.downcase
 
-    if Move::CHOICES.include?(mv.choice)
-      self.move = mv
+    if Move::CHOICES.include?(mv)
+      self.move = Move.new(mv)
     else
       puts "Incorrect move"
       choose
@@ -40,6 +45,7 @@ class Computer < Player
   NAMES = %w(Hal Deep\ Blue R2D2 Sonny).freeze
 
   def initialize
+    super
     set_name
   end
 
