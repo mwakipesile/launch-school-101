@@ -1,3 +1,4 @@
+# Module for reusable game methods
 module Game
   def play_again?
     puts 'Would you like to play again? Y/n'

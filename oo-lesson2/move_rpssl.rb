@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 require './move.rb'
 
 class MoveSL < Move
@@ -8,7 +9,7 @@ class MoveSL < Move
     'k' => 'spock',
     'l' => 'lizard'
   }.freeze
-  CHOICES = (CHOICE_TABLE.keys).freeze
+  CHOICES = CHOICE_TABLE.keys.freeze
   WIN = %w(sp pr rl lk ks sl lp pk kr rs).freeze
 
   def beats?(foe)

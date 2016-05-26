@@ -9,7 +9,7 @@ class Move
     's' => 'scissors'
   }.freeze
 
-  CHOICES = (CHOICE_TABLE.keys).freeze
+  CHOICES = CHOICE_TABLE.keys.freeze
   WIN = %w(sp pr rs).freeze
 
   def initialize(choice)

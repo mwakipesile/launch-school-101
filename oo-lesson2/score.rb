@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+# Class for calculationg and storing scores
 class Score
   attr_accessor :count
 

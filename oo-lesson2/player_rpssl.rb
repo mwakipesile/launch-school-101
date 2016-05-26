@@ -1,6 +1,7 @@
+# frozen_string_literal: true
 require './player.rb'
 
-#Human class for RPS Spock Lizard
+# Human class for RPS Spock Lizard
 class HumanSL < Human
   def choose
     puts 'Enter r, p, s, k, or l for rock, paper,' \

@@ -21,6 +21,7 @@ class RockPaperScissors
       human.choose
       computer.choose
       display_results
+      display_current_score
 
       if winner?
         display_winner
@@ -47,14 +48,6 @@ class RockPaperScissors
     prompt('Thanks for playing Rock, Paper, Scissors. Bye!')
   end
 
-  def display_results
-    prompt("#{human.name} chose #{human.move}")
-    prompt("#{computer.name} chose #{computer.move}")
-    prompt(results)
-    prompt("#{computer.name}'s score: #{computer.score.count}")
-    prompt("#{human.name}'s score: #{human.score.count}")
-  end
-
   def results
     if human.move.beats?(computer.move)
       human.score.add
@@ -66,11 +59,22 @@ class RockPaperScissors
     'It\'s a tie'
   end
 
+  def display_results
+    prompt("#{human.name} chose #{human.move}")
+    prompt("#{computer.name} chose #{computer.move}")
+    prompt(results)
+  end
+
+  def display_current_score
+    prompt("#{computer.name}'s score: #{computer.score.count}")
+    prompt("#{human.name}'s score: #{human.score.count}")
+  end
+
   def winner?
     [human.score.count, computer.score.count].max == WINNING_SCORE
   end
 
-  def fetch_winner
+  def overall_winner
     if human.score.count == WINNING_SCORE
       return human.name
     end
@@ -79,7 +83,8 @@ class RockPaperScissors
   end
 
   def display_winner
-    winner = fetch_winner
+    winner = overall_winner
+
     prompt("#{winner} is the overall winner!")
   end
 end
