@@ -1,8 +1,9 @@
+# frozen_string_literal: true
 require './move.rb'
 
 class Paper < Move
   def initialize
-    @choice = :paper
+    @choice = 'paper'
   end
 
   def beats?(foe)

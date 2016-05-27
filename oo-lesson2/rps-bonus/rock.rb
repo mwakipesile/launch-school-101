@@ -1,8 +1,9 @@
+# frozen_string_literal: true
 require './move.rb'
 
 class Rock < Move
   def initialize
-    @choice = :rock
+    @choice = 'rock'
   end
 
   def beats?(foe)

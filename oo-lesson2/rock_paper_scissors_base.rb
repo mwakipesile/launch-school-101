@@ -1,7 +1,4 @@
 # frozen_string_literal: true
-require './score.rb'
-require '../modules/game.rb'
-
 # Rock Paper Scissors base class
 class RockPaperScissors
   include Game
