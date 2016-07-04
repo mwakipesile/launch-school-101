@@ -1,0 +1,6 @@
+# Player messages yalm file
+en:
+  name: 'Please enter your name'
+  invalid_name: 'Sorry, must enter value'
+  choice: 'Enter r, p, or s for rock, paper, or scissors, respectively'
+  invalid: 'invalid move'
