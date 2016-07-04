@@ -1,0 +1,8 @@
+# Helper messages yalm file
+en:
+  name: 'Please enter your name'
+  invalid_name: 'Sorry, must enter value'
+  choice: |+
+        Enter r, p, s, k, or l for
+           rock, paper, scissors, spock, or lizard respectively
+  invalid: 'invalid move'

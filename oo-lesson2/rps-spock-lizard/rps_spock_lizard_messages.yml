@@ -1,0 +1,13 @@
+# Rock Paper Scissors Spock Lizard messages yalm file
+en:
+  welcome: "Welcome to Rock, Paper, Scissors, Spock, Lizard challenge %{var}!"
+  choice: '%{var} chose %{var2}'
+  winner: '%{var} won!'
+  tie: "It's a tie!"
+  score: "%{var}'s score: %{var2}"
+  overall_winner: '%{var} is the overall winner!'
+  new: 'Would you like to play again? Y/n'
+  invalid: 'Wrong input. Please enter Y or n'
+  exit: |+
+        Thanks for playing Rock, Paper, Scissors, Spock, Lizard.
+            Good bye!

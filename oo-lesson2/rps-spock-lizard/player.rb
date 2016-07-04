@@ -1,51 +1,37 @@
 # frozen_string_literal: true
-# Player class
 class Player
-  attr_accessor :move, :name, :score
+  MESSAGES = YAML.load_file('player_messages.yml')
+  LANGUAGE = 'en'
 
-  def initialize
-    @score = Score.new
-  end
+  attr_accessor :move, :name
 end
 
-# Human child class
+# Human class for RPS Spock Lizard
 class Human < Player
+  include Helper
+
   def initialize
-    super
     set_name
   end
 
   def choose
-    puts 'Enter r, p, or s for rock, paper, or scissors respectively'
+    prompt('choice')
     mv = gets.chomp.downcase
 
     if Move::CHOICES.include?(mv)
       self.move = Move.new(mv)
     else
-      puts "Incorrect move"
+      prompt('invalid')
       choose
-    end
-  end
-
-  def set_name
-    puts 'Please enter your name'
-    nm = gets.chomp
-
-    if nm.empty?
-      puts "Sorry, must enter value"
-      set_name
-    else
-      self.name = nm
     end
   end
 end
 
-# Computer child class
+# Computer class for RPS Spock Lizard
 class Computer < Player
   NAMES = %w(Hal Deep\ Blue R2D2 Sonny).freeze
 
   def initialize
-    super
     set_name
   end
 
