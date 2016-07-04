@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Person class
 class Person
   attr_accessor :first_name, :last_name

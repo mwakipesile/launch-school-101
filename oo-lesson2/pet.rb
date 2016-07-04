@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Module for swimming pets
 module Swimmable
   def swim
