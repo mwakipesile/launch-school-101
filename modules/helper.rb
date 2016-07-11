@@ -19,4 +19,8 @@ module Helper
       self.name = nm
     end
   end
+
+  def clear_screen
+    system('clear') || system('cls')
+  end
 end
