@@ -1,0 +1,16 @@
+# Rock Paper Scissors messages yalm file
+en:
+  players: 'You are an %{var}. Computer is an %{var2}'
+  welcome: "Welcome to Tic Tac Toe!"
+  choice: 'Choose a square: %{var}'
+  invalid_square: 'Invalid square. Please choose between 1-9'
+  winner: '%{var} won!'
+  tie: "It's a tie!"
+  score: "%{var}'s score: %{var2}"
+  overall_winner: '%{var} is the overall winner!'
+  new: 'Would you like to play again? Y/n'
+  new_game: "Alright, let's go at it again!"
+  invalid: 'Wrong input. Please enter Y or n'
+  exit: |+
+        Thanks for playing Tic Tac Toe.
+            Good bye!
