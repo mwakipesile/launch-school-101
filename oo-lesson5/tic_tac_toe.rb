@@ -3,11 +3,12 @@ require 'yaml'
 require '../modules/helper'
 require '../modules/game'
 
+# Board Class
 class Board
   WINNING_LINES = [
     [1, 2, 3], [4, 5, 6], [7, 8, 9], [1, 4, 7],
     [2, 5, 8], [3, 6, 9], [1, 5, 9], [3, 5, 7]
-  ]
+  ].freeze
 
   include Helper
 
@@ -24,10 +25,10 @@ class Board
   end
 
   def display_row(position1, position2, position3)
-    puts "     |     |"
+    puts '     |     |'
     puts "  #{squares[position1]}  |  " \
       "#{squares[position2]}  |  #{squares[position3]}"
-    puts "     |     |"
+    puts '     |     |'
   end
 
   def display
@@ -66,7 +67,7 @@ class Board
     square = squares[line.first]
     return false if square.unmarked?
 
-    #if line.map {|position| squares[position].marker }.uniq.size == 1
+    # if line.map {|position| squares[position].marker }.uniq.size == 1
     if squares.values_at(*line).map(&:marker).uniq.size == 1
       self.winning_marker = square.marker
     end
@@ -78,8 +79,9 @@ class Board
   end
 end
 
+# Square class
 class Square
-  EMPTY_SQUARE = ' '
+  EMPTY_SQUARE = ' '.freeze
 
   attr_accessor :marker
 
@@ -96,23 +98,19 @@ class Square
   end
 end
 
-class Player
-  attr_reader :marker
+# Player class
+Player = Struct.new(:marker)
 
-  def initialize(marker)
-    @marker = marker
-  end
-end
-
+# Main Tic Tac Toe class
 class TicTacToe
   include Helper
   include Game
 
-  LANGUAGE = 'en'
+  LANGUAGE = 'en'.freeze
   MESSAGES = YAML.load_file('tic_tac_toe_messages.yml')
-  CROSS = 'X'
-  NOUGH = 'O'
-  FIRST_TO_MOVE = 'X'
+  CROSS = 'X'.freeze
+  NOUGH = 'O'.freeze
+  FIRST_TO_MOVE = 'X'.freeze
 
   attr_reader :board, :human, :computer
   attr_accessor :current_marker
@@ -123,6 +121,30 @@ class TicTacToe
     @computer = Player.new(NOUGH)
     @current_marker = FIRST_TO_MOVE
   end
+
+  def play
+    display_welcome_message
+
+    loop do
+      loop do
+        display_board
+        current_player_moves
+
+        break if board.someone_won? || board.full?
+
+        clear_screen
+      end
+
+      display_result
+      break unless play_again?
+      reset
+      display_play_again_message
+    end
+
+    display_goodbye_message
+  end
+
+  private
 
   def display_welcome_message
     clear_screen
@@ -140,8 +162,12 @@ class TicTacToe
     puts ''
   end
 
+  def available_positions
+    board.empty_positions.join(', ')
+  end
+
   def human_moves
-    prompt('choice', board.empty_positions.join(', '))
+    prompt('choice', available_positions)
     position = nil
 
     loop do
@@ -182,28 +208,6 @@ class TicTacToe
       computer_moves
       self.current_marker = human.marker
     end
-  end
-
-  def play
-    display_welcome_message
-
-    loop do
-      loop do
-        display_board
-        current_player_moves
-
-        break if board.someone_won? || board.full?
-
-        clear_screen
-      end
-
-      display_result
-      break unless play_again?
-      reset
-      display_play_again_message
-    end
-
-    display_goodbye_message
   end
 
   def reset

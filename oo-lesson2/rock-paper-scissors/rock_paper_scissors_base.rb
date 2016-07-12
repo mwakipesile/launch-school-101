@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 require 'yaml'
-require '../../modules/helper.rb'
-require '../../modules/game.rb'
+require '../../modules/helper'
+require '../../modules/game'
 require '../score.rb'
 require './move.rb'
 require './player.rb'
