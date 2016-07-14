@@ -12,7 +12,7 @@ en:
   winner: '%{var} won!'
   tie: "It's a tie!"
   score: "%{var}'s score: %{var2}; %{var3}'s score: %{var4}"
-  overall_winner: '%{var} the overall winner!'
+  overall_winner: '%{var} is the overall winner!'
   new: 'Would you like to play again? Y/n'
   new_game: "Alright, let's go at it again!"
   invalid: 'Wrong input. Please enter Y or n'
