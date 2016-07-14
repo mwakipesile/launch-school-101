@@ -8,6 +8,15 @@ module Helper
     puts "=> #{messages(key, self.class::LANGUAGE)}" % { var: var, var2: var2 }
   end
 
+  def display_welcome_message
+    clear_screen
+    prompt('welcome')
+  end
+
+  def display_goodbye_message
+    prompt('exit')
+  end
+
   def set_name
     prompt('name')
     nm = gets.chomp

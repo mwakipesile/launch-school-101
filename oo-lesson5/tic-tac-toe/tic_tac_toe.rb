@@ -18,7 +18,6 @@ class TicTacToe
   CROSS = 'X'.freeze
   NOUGHT = 'O'.freeze
   FIRST_TO_MOVE = 'CHOOSE'.freeze
-  INITIAL_SCORE = 0
   WINNING_SCORE = 5
 
   attr_reader :board, :human, :computer
@@ -26,21 +25,19 @@ class TicTacToe
 
   def initialize
     @board = Board.new
-    @human = Human.new(CROSS, INITIAL_SCORE)
-    @computer = Computer.new(NOUGHT, INITIAL_SCORE)
+    @human = Human.new(CROSS)
+    @computer = Computer.new(NOUGHT)
     @current_marker = firs_player_to_move
   end
 
   def firs_player_to_move
-    if FIRST_TO_MOVE.downcase == 'choose'
-      return choose_first_player
-    end
+    return choose_first_player if FIRST_TO_MOVE.casecmp('choose')
 
     FIRST_TO_MOVE
   end
 
   def choose_first_player
-    options = { '1' => CROSS, '2' => NOUGHT }
+    options = { '1' => human.marker, '2' => computer.marker }
 
     prompt('choose_first_player')
     choice = gets.chomp
@@ -51,23 +48,13 @@ class TicTacToe
     choose_first_player
   end
 
-
-
   def play
     display_welcome_message
 
     loop do
-      loop do
-        display_board
-
-        current_player_moves
-
-        break if game_over
-
-        clear_screen
-      end
-
+      run_the_game
       display_result
+
       break if max_score_reached || !new_game
     end
 
@@ -75,6 +62,18 @@ class TicTacToe
   end
 
   private
+
+  def run_the_game
+    loop do
+      display_board
+
+      current_player_moves
+
+      break if game_over
+
+      clear_screen
+    end
+  end
 
   def display_board
     prompt('players', human.marker, computer.marker)

@@ -8,9 +8,9 @@ class Player
 
   attr_accessor :marker, :score
 
-  def initialize(marker, score = 0)
+  def initialize(marker)
     @marker = marker
-    @score = score
+    @score = 0
   end
 
   def increment_score
@@ -18,6 +18,7 @@ class Player
   end
 end
 
+# Human player class
 class Human < Player
   def moves(board)
     prompt('choice', joinor(board.empty_positions, ', ', 'or'))
@@ -33,11 +34,13 @@ class Human < Player
   end
 end
 
+# Computer player class
 class Computer < Player
   def moves(board)
     if board.center_square.unmarked?
       position = board.center_position
-    elsif position = position_at_immediate_risk(board)
+    elsif position_at_immediate_risk(board)
+      position = position_at_immediate_risk(board)
     else
       position = board.empty_positions.sample
     end
@@ -48,7 +51,7 @@ class Computer < Player
   def position_at_immediate_risk(board)
     lines = board.lines_at_immediate_risk
 
-    line = lines.find { |winning_line| winning_line.value?(self.marker) }
+    line = lines.find { |winning_line| winning_line.value?(marker) }
     line = lines.first unless line
 
     if line

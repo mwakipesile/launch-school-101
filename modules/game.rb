@@ -1,3 +1,4 @@
+require_relative './helper'
 # Module for reusable game methods
 module Game
   def play_again?
@@ -9,5 +10,9 @@ module Game
       return false if ans.downcase.start_with?('n')
       prompt('invalid')
     end
+  end
+
+  def display_play_again_message
+    prompt('new_game')
   end
 end
