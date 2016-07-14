@@ -29,12 +29,13 @@ class Board
 
   def display
     separator = '-----+-----+-----'
-
+    puts ''
     display_row(1, 2, 3)
     puts separator
     display_row(4, 5, 6)
     puts separator
     display_row(7, 8, 9)
+    puts ''
   end
 
   def []=(position, marker)

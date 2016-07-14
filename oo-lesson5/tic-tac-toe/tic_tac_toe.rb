@@ -24,13 +24,13 @@ class TicTacToe
 
   def initialize
     @board = Board.new
-    @human = Human.new(CROSS)
-    @computer = Computer.new(NOUGHT)
-    @current_marker = firs_player_to_move
+    @human = Human.new(choose_marker)
+    @computer = Computer.new(computer_marker)
+    @current_marker = first_player_to_move
   end
 
-  def firs_player_to_move
-    return choose_first_player if FIRST_TO_MOVE.casecmp('choose')
+  def first_player_to_move
+    return choose_first_player if FIRST_TO_MOVE.casecmp('choose') == 0
 
     FIRST_TO_MOVE
   end
@@ -47,12 +47,31 @@ class TicTacToe
     choose_first_player
   end
 
+  def choose_marker
+    loop do
+      prompt('choose_marker')
+      marker = gets.chomp
+
+      return CROSS if marker.casecmp(CROSS) == 0
+      return NOUGHT if marker.casecmp(NOUGHT) == 0
+
+      prompt('invalid_choice')
+    end
+  end
+
+  def computer_marker
+    return NOUGHT if human.marker == CROSS
+    CROSS
+  end
+
   def play
     display_welcome_message
 
     loop do
       run_the_game
-      display_result
+      update_score
+      display_results
+      display_status
 
       break if max_score_reached || !new_game
     end
@@ -65,49 +84,45 @@ class TicTacToe
   def run_the_game
     loop do
       display_board
-
       current_player_moves
 
-      break if game_over
+      break if game_over?
 
       clear_screen
     end
   end
 
   def display_board
-    prompt('players', human.marker, computer.marker)
+    prompt('players', human.name, human.marker, computer.name, computer.marker)
     board.display
   end
 
-  def available_positions
-    joinor(board.empty_positions, ', ', 'or')
-  end
-
-  def game_over
+  def game_over?
     board.someone_won? || board.full?
   end
 
   def winning_player
-    if board.winning_marker == human.marker
-      human.increment_score
-      return 'You'
-    elsif board.winning_marker == computer.marker
-      computer.increment_score
-      return 'Computer'
-    end
+    return human if board.winning_marker == human.marker
+    return computer if board.winning_marker == computer.marker
   end
 
-  def display_result
+  def update_score
+    winning_player.increment_score if winning_player
+  end
+
+  def display_results
     clear_screen
     display_board
 
-    if board.winning_marker
-      prompt('winner', winning_player)
+    if winning_player
+      prompt('winner', winning_player.name)
     else
       prompt('tie')
     end
+  end
 
-    prompt('score', human.score, computer.score)
+  def display_status
+    prompt('score', human.name, human.score, computer.name, computer.score)
 
     overall_winner = winner
     prompt('overall_winner', overall_winner) if overall_winner
@@ -129,8 +144,8 @@ class TicTacToe
 
   def winner
     if max_score_reached
-      return 'You are' if human.score == WINNING_SCORE
-      return 'Computer is'
+      return human.name if human.score == WINNING_SCORE
+      return computer.name
     end
   end
 
@@ -143,7 +158,7 @@ class TicTacToe
 
   def reset
     board.clear
-    self.current_marker = firs_player_to_move
+    self.current_marker = first_player_to_move
   end
 end
 

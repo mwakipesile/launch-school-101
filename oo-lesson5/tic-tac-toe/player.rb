@@ -6,7 +6,7 @@ class Player
   LANGUAGE = 'en'.freeze
   MESSAGES = YAML.load_file('tic_tac_toe_messages.yml')
 
-  attr_accessor :marker, :score
+  attr_accessor :marker, :score, :name
 
   def initialize(marker)
     @marker = marker
@@ -20,6 +20,11 @@ end
 
 # Human player class
 class Human < Player
+  def initialize(marker)
+    super(marker)
+    set_name
+  end
+
   def moves(board)
     prompt('choice', joinor(board.empty_positions, ', ', 'or'))
     position = nil
@@ -36,6 +41,17 @@ end
 
 # Computer player class
 class Computer < Player
+  NAMES = %w(Hal Deep\ Blue R2D2 Sonny).freeze
+
+  def initialize(marker)
+    super(marker)
+    set_name
+  end
+
+  def set_name
+    self.name = NAMES.sample
+  end
+
   def moves(board)
     if board.center_square.unmarked?
       position = board.center_position

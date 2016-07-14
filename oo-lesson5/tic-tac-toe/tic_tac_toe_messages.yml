@@ -1,14 +1,17 @@
 # Rock Paper Scissors messages yalm file
 en:
   choose_first_player: 'Enter 1 to go first, 2 for computer to go first'
+  choose_marker: "Choose your marker: 'X' or 'O'"
   invalid_choice: 'Invalid choice.'
-  players: 'You are an %{var}. Computer is an %{var2}'
+  name: 'Please enter your name'
+  invalid_name: 'Sorry, must enter value'
+  players: '%{var} is an %{var2}. %{var3} is an %{var4}'
   welcome: "Welcome to Tic Tac Toe!"
   choice: 'Choose a square: %{var}'
   invalid_square: 'Invalid square. Please choose between 1-9'
   winner: '%{var} won!'
   tie: "It's a tie!"
-  score: "Your score: %{var}; Computer's score: %{var2}"
+  score: "%{var}'s score: %{var2}; %{var3}'s score: %{var4}"
   overall_winner: '%{var} the overall winner!'
   new: 'Would you like to play again? Y/n'
   new_game: "Alright, let's go at it again!"
