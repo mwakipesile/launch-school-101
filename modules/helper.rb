@@ -5,12 +5,13 @@ module Helper
   end
 
   def prompt(key, var = nil, var2 = nil, var3 = nil, var4 = nil)
-    puts "=> #{messages(key, self.class::LANGUAGE)}" % {
+    puts "=> #{format(
+      messages(key, self.class::LANGUAGE),
       var: var,
       var2: var2,
       var3: var3,
       var4: var4
-    }
+    )}"
   end
 
   def display_welcome_message
