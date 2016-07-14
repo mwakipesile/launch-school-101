@@ -85,6 +85,7 @@ class TicTacToe
     loop do
       display_board
       current_player_moves
+      switch_players_turn
 
       break if game_over?
 
@@ -129,13 +130,13 @@ class TicTacToe
   end
 
   def current_player_moves
-    if current_marker == human.marker
-      human.moves(board)
-      self.current_marker = computer.marker
-    else
-      computer.moves(board)
-      self.current_marker = human.marker
-    end
+    human.moves(board) if current_marker == human.marker
+    computer.moves(board) if current_marker == computer.marker
+  end
+
+  def switch_players_turn
+    marker = current_marker == human.marker ? computer.marker : human.marker
+    self.current_marker = marker
   end
 
   def max_score_reached
