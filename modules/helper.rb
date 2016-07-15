@@ -27,12 +27,24 @@ module Helper
     prompt('name')
     nm = gets.chomp
 
-    if nm.empty?
+    if has_alpha?(nm)
+      self.name = nm
+    else
       prompt('invalid_name')
       set_name
-    else
-      self.name = nm
     end
+  end
+
+  def has_alpha?(word)
+    return false unless word.is_a?(String)
+
+    letters = ('a'..'z').to_a
+
+    word.each_char do |char|
+      return true if letters.include?(char.downcase)
+    end
+
+    false
   end
 
   def clear_screen
