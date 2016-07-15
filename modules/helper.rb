@@ -27,7 +27,7 @@ module Helper
     prompt('name')
     nm = gets.chomp
 
-    if has_alpha?(nm)
+    if alpha?(nm)
       self.name = nm
     else
       prompt('invalid_name')
@@ -35,7 +35,7 @@ module Helper
     end
   end
 
-  def has_alpha?(word)
+  def alpha?(word)
     return false unless word.is_a?(String)
 
     letters = ('a'..'z').to_a
