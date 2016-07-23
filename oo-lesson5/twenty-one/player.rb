@@ -1,3 +1,4 @@
+require 'pry'
 # Players parent class
 class Gambler
   include Helper
@@ -7,11 +8,10 @@ class Gambler
   HIT = 'h'.freeze
   STAY = 's'.freeze
 
-  attr_reader :name, :hand
+  attr_reader :hand
   attr_accessor :points, :hit, :stay, :win_count
 
-  def initialize(name)
-    @name = name
+  def initialize
     @win_count = 0
   end
 
@@ -63,8 +63,11 @@ end
 
 # Player class
 class Player < Gambler
+  attr_accessor :name
+
   def initialize
-    super('You')
+    super
+    set_name
   end
 
   def display_status
@@ -85,8 +88,11 @@ class Dealer < Gambler
   FLOOR_POINTS = 17
   FACE_DOWN_CARDS = 1
 
+  attr_reader :name
+
   def initialize
-    super('Dealer')
+    super
+    @name = 'Dealer'
   end
 
   def hand=(cards)

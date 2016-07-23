@@ -14,9 +14,9 @@ module Helper
     )}"
   end
 
-  def display_welcome_message
+  def display_welcome_message(name = '')
     clear_screen
-    prompt('welcome')
+    prompt('welcome', name)
   end
 
   def display_goodbye_message

@@ -94,7 +94,7 @@ class TwentyOne
   end
 
   def play
-    display_welcome_message
+    display_welcome_message(player.name)
     loop do
       deck.shuffle_cards
       deal_starting_hands
@@ -159,16 +159,22 @@ class TwentyOne
   def display_showdown_results
     case winner
     when :player
-      prompt('win')
+      prompt('win', player.name)
     when :dealer
-      prompt('loss')
+      prompt('win', dealer.name)
     else
       prompt('push')
     end
   end
 
   def display_win_count
-    prompt('win_count', player.win_count, dealer.win_count)
+    prompt(
+      'win_count',
+      player.name,
+      player.win_count,
+      dealer.name,
+      dealer.win_count
+    )
   end
 
   def display_winner

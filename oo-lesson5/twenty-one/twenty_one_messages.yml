@@ -1,12 +1,13 @@
 # Twenty One messages yalm file
 en:
-  welcome: 'Welcome to Twenty One table'
+  welcome: 'Welcome to Twenty One table %{var}'
+  name: 'Please enter your name'
   blackjack: '%{var} won the round with a BLACKJACK!!!'
   decision: 'Hit or stay?'
-  win: 'You won this round!'
-  loss: 'You lost this round'
+  win: '%{var} won this round!'
+  loss: '%{var} lost this round'
   push: 'Push'
-  win_count: 'You won %{var}; dealer won %{var2}'
+  win_count: '%{var} won %{var2}; %{var3} won %{var4}'
   player_wins: 'Congrats! You are the overall winner!'
   dealer_wins: 'Dealer is the overall winner'
   bust: '%{var} busted with %{var2} points'
