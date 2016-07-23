@@ -1,4 +1,3 @@
-require 'pry'
 # Players parent class
 class Gambler
   include Helper
